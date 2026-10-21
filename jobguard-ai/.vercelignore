@@ -1,0 +1,10 @@
+node_modules
+dist
+.pnpm-store
+preview.png
+.env
+.env.local
+**/__pycache__
+src/test
+backend/*.pkl
+backend/test_*.py

@@ -1,0 +1,16 @@
+# Local runtimes, credentials, and deployment tooling
+.venv/
+.deployment-tools/
+**/node_modules/
+**/dist/
+**/.pnpm-store/
+**/.vercel/
+**/__pycache__/
+*.py[cod]
+**/.env
+**/.env.local
+**/.env.*.local
+**/coverage/
+*.log
+.DS_Store
+Thumbs.db
