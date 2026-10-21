@@ -1,5 +1,5 @@
 import { Sun, Moon, ArrowUpRight } from "lucide-react";
-export default function Header({ theme, toggle, connection }) {
+export default function Header({ theme, toggle }) {
   return (
     <header className="header">
       <a className="brand" href="#main">
@@ -12,10 +12,6 @@ export default function Header({ theme, toggle, connection }) {
         </span>
       </a>
       <div className="header-actions">
-        <span className={"connection " + connection.toLowerCase()}>
-          <i />
-          {connection}
-        </span>
         <button
           className="icon-button"
           onClick={toggle}

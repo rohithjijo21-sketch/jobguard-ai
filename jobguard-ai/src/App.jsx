@@ -7,7 +7,7 @@ import AnalysisResult from "./components/AnalysisResult";
 import Footer from "./components/Footer";
 import { emptyJob, prepareJob, validateJob } from "./utils/validation";
 import { scamJob, legitJob } from "./data/sampleJobs";
-import { analyzeJob, checkConnectivity } from "./services/api";
+import { analyzeJob } from "./services/api";
 function savedTheme() {
   try {
     return localStorage.getItem("jobguard-theme") || "light";
@@ -21,7 +21,6 @@ export default function App() {
     [state, setState] = useState("initial"),
     [result, setResult] = useState(null),
     [error, setError] = useState(""),
-    [connection, setConnection] = useState("Unverified"),
     [theme, setTheme] = useState(savedTheme);
   const request = useRef(null);
   const version = useRef(0);
@@ -32,7 +31,6 @@ export default function App() {
     } catch {}
   }, [theme]);
   useEffect(() => {
-    checkConnectivity().then(setConnection);
     return () => request.current?.abort();
   }, []);
   function invalidate() {
@@ -84,9 +82,6 @@ export default function App() {
     try {
       const data = await analyzeJob(payload, {
         signal: controller.signal,
-        onReachable: () => {
-          if (token === version.current) setConnection("Connected");
-        },
       });
       if (token !== version.current) return;
       setResult(data);
@@ -97,7 +92,6 @@ export default function App() {
         setState("initial");
         return;
       }
-      if (err.network) setConnection("Disconnected");
       setError(err.message);
       setState("error");
     } finally {
@@ -112,7 +106,6 @@ export default function App() {
       <Header
         theme={theme}
         toggle={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-        connection={connection}
       />
       <main id="main">
         <div className="page-heading">

@@ -28,11 +28,11 @@ function submit() {
   fireEvent.click(screen.getByRole("button", { name: "Analyze Job Posting" }));
 }
 describe("workspace", () => {
-  it("starts ready with all ten fields and unverified connection", () => {
+  it("starts ready with all ten fields and no connection badge", () => {
     render(<App />);
     expect(screen.getByText("Ready to Inspect")).toBeInTheDocument();
     expect(document.querySelectorAll("input,textarea,select")).toHaveLength(10);
-    expect(screen.getByText("Unverified")).toBeInTheDocument();
+    expect(screen.queryByText("Unverified")).not.toBeInTheDocument();
   });
   it("validates empty and whitespace required values", () => {
     render(<App />);
@@ -89,7 +89,6 @@ describe("workspace", () => {
     expect(screen.getByText("92.45")).toBeInTheDocument();
     for (const w of fraud.rule_warnings)
       expect(screen.getByText(w)).toBeInTheDocument();
-    expect(screen.getByText("Connected")).toBeInTheDocument();
   });
   it("renders legitimate prediction and empty warning state", async () => {
     mock(legit);
@@ -126,7 +125,6 @@ describe("workspace", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "could not be reached",
     );
-    expect(screen.getByText("Disconnected")).toBeInTheDocument();
     fetch.mockResolvedValue({ ok: true, json: async () => legit });
     fireEvent.click(screen.getByRole("button", { name: "Retry analysis" }));
     expect(
